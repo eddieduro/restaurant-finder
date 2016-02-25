@@ -29,6 +29,7 @@
       static function getAll()
       {
         $returned_cuisines = $GLOBALS['DB']->query("SELECT * FROM cuisine;");
+        var_dump($returned_cuisines);
         $cuisines = array();
         foreach($returned_cuisines as $cuisine)
         {
@@ -55,6 +56,11 @@
           }
         }
         return $found_cuisine;
+      }
+
+      function delete()
+      {
+        $GLOBALS['DB']->exec("DELETE FROM cuisine WHERE id = {$this->getId()};");
       }
 
     }
