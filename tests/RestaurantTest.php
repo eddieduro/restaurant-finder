@@ -6,6 +6,7 @@
   */
 
   require_once "src/Restaurant.php";
+  require_once "src/Cuisine.php";
 
   $server = 'mysql:host=localhost;dbname=food_test';
   $username = 'root';
@@ -23,7 +24,9 @@
       {
         //Arrange
         $name = "Pho Shizzle";
-        $test_Restaurant = new Restaurant($name);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         //Act
         $result = $test_Restaurant->getName();
         //Assert
@@ -33,7 +36,12 @@
       {
         //Arrange
         $name = "Pho Shizzle";
-        $test_Restaurant = new Restaurant($name);
+        $id = 1;
+
+        $description = 'Vietnamese';
+        $test_cuisine = new Cuisine($description, $id);
+        $cuisine_id = $test_cuisine->getId();
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
         //Act
         $result = Restaurant::getAll();
@@ -45,14 +53,16 @@
         //Arrange
         $name = "Pho Shizzle";
         $name2 = "El Tarasco";
-        $test_Restaurant = new Restaurant($name);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
-        $test_Restaurant2 = new Restaurant($name2);
+        $test_Restaurant2 = new Restaurant($name2, $id, $cuisine_id);
         $test_Restaurant2->save();
         //Act
         $result = Restaurant::getAll();
         //Assess
-        $this->assertEquals($result, [$test_Restaurant, $test_Restaurant2]);
+        $this->assertEquals([$test_Restaurant, $test_Restaurant2], $result);
       }
 
       function test_deleteAll()
@@ -60,9 +70,11 @@
         //Arrange
         $name = "Pho Shizzle";
         $name2 = "El Tarasco";
-        $test_Restaurant = new Restaurant($name);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
-        $test_Restaurant2 = new Restaurant($name2);
+        $test_Restaurant2 = new Restaurant($name2, $id, $cuisine_id);
         $test_Restaurant2->save();
 
         //Act
@@ -77,9 +89,11 @@
         //Arrange
         $name = "Pho Shizzle";
         $name2 = "El Tarasco";
-        $test_Restaurant = new Restaurant($name);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
-        $test_Restaurant2 = new Restaurant($name2);
+        $test_Restaurant2 = new Restaurant($name2, $id, $cuisine_id);
         $test_Restaurant2->save();
         //Act
         $id = $test_Restaurant->getId();
@@ -91,8 +105,9 @@
       {
         //Arrange
         $name = "Pho Shizzle";
-        $id = null;
-        $test_Restaurant = new Restaurant($name, $id);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
         $new_name = "Pho Kim";
         //Act
@@ -104,12 +119,13 @@
       {
         //Arrange
         $name = "Pho Shizzle";
-        $id = null;
-        $test_Restaurant = new Restaurant($name, $id);
+        $id = 1;
+        $cuisine_id = 1;
+        $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
         $test_Restaurant->save();
 
         $name2 = "Pho Kim";
-        $test_Restaurant2 = new Restaurant($name2, $id);
+        $test_Restaurant2 = new Restaurant($name2, $id, $cuisine_id);
         $test_Restaurant2->save();
         //Act
         $test_Restaurant->delete();

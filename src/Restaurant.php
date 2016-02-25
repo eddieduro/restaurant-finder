@@ -3,15 +3,21 @@
     {
         private $name;
         private $id;
+        private $cuisine_id;
 
-      function __construct($name, $id = null)
+      function __construct($name, $id = null, $cuisine_id)
       {
         $this->name = $name;
         $this->id = $id;
+        $this->cuisine_id = $cuisine_id;
       }
       function getId()
       {
-        return $this->id;
+          return $this->id;
+      }
+      function getCuisineId()
+      {
+          return $this->cuisine_id;
       }
       function setName($new_name)
       {
@@ -23,7 +29,7 @@
       }
       function save()
       {
-        $GLOBALS['DB']->exec("INSERT INTO restaurant (name) VALUES ('{$this->getName()}');");
+        $GLOBALS['DB']->exec("INSERT INTO restaurant (name, cuisine_id) VALUES ('{$this->getName()}', {$this->getCuisineId()});");
         $this->id = $GLOBALS['DB']->lastInsertId();
       }
       static function getAll()
@@ -34,7 +40,8 @@
           {
             $name = $restaurant['name'];
             $id = $restaurant['id'];
-            $new_Restaurant = new Restaurant($name, $id);
+            $cuisine_id = $restaurant['cuisine_id'];
+            $new_Restaurant = new Restaurant($name, $id, $cuisine_id);
             array_push($restaurants, $new_Restaurant);
           }
           return $restaurants;
