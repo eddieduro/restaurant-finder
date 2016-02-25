@@ -18,6 +18,8 @@
       protected function tearDown()
       {
         Restaurant::deleteAll();
+        Cuisine::deleteAll();
+
       }
 
       function test_getName()
@@ -35,17 +37,22 @@
       function test_save()
       {
         //Arrange
-        $name = "Pho Shizzle";
-        $id = 1;
-
+        $id = null;
         $description = 'Vietnamese';
         $test_cuisine = new Cuisine($description, $id);
+        $test_cuisine->save();
+
+        $name = "Pho Shizzle";
+
         $cuisine_id = $test_cuisine->getId();
+
         $test_Restaurant = new Restaurant($name, $id, $cuisine_id);
-        $test_Restaurant->save();
+
         //Act
-        $result = Restaurant::getAll();
+        $test_Restaurant->save();
         //Assert
+        $result = Restaurant::getAll();
+        var_dump($result);
         $this->assertEquals($test_Restaurant, $result[0]);
       }
       function test_getAll()
