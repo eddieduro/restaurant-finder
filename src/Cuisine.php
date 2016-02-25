@@ -31,7 +31,7 @@
         $this->id = $GLOBALS['DB']->lastInsertId();
       }
 
-      function getRestaurant()
+      function getRestaurants()
       {
           $restaurants = array();
           $returned_restaurants = $GLOBALS['DB']->query("SELECT * FROM restaurant WHERE cuisine_id = {$this->getId()}");
@@ -46,10 +46,26 @@
           return $restaurants;
       }
 
+    //   static function findRestaurants()
+    //   {
+    //     $returned_Restaurants = $GLOBALS['DB']->query("SELECT * FROM restaurant WHERE cuisine_id = {$this->getCuisineId()}");
+    //     $restaurants = array();
+    //     foreach($returned_Restaurants as $restaurant)
+    //       {
+    //         $name = $restaurant['name'];
+    //         $id = $restaurant['id'];
+    //         $cuisine_id = $restaurant['cuisine_id'];
+    //         $new_Restaurant = new Restaurant($name, $id, $cuisine_id);
+    //         array_push($restaurants, $new_Restaurant);
+    //       }
+    //       return $restaurants;
+    //   }
+
+
       static function getAll()
       {
         $returned_cuisines = $GLOBALS['DB']->query("SELECT * FROM cuisine;");
-        var_dump($returned_cuisines);
+
         $cuisines = array();
         foreach($returned_cuisines as $cuisine)
         {
