@@ -33,8 +33,10 @@
 
     $app->get("/cuisines/{id}", function ($id) use ($app) {
         $cuisine = Cuisine::find($id);
+        $current_restaurant = $cuisine->getRestaurant();
+        // var_dump($current_restaurant);
         return $app['twig']->render('current_cuisine.html.twig', array(
-            'cuisine' => $cuisine, 'restaurants' => Restaurant::getAll()
+            'cuisine' => $cuisine, 'restaurants' => $current_restaurant
         ));
     });
 
@@ -61,13 +63,20 @@
         $cuisine = Cuisine::find($id);
         $new_restaurant = new Restaurant($_POST['name'], null, $id);
         $new_restaurant->save();
-        return $app['twig']->render('current_cuisine.html.twig', array('cuisine' => $cuisine, 'restaurants' => $new_restaurant));
+        return $app['twig']->render('current_cuisine.html.twig', array('cuisine' => $cuisine,  'restaurants' => $new_restaurant));
     });
 
     $app->delete("/cuisines/{id}", function($id) use ($app) {
-    $cuisine = Cuisine::find($id);
-    $cuisine->delete();
-    return $app['twig']->render('index.html.twig', array('cuisines' => Cuisine::getAll()));
+        $cuisine = Cuisine::find($id);
+        $cuisine->delete();
+        return $app['twig']->render('index.html.twig', array('cuisines' => Cuisine::getAll()));
+    });
+
+        $app->delete("/cuisines/{id}/delete/{restaurant_id}", function($id, $restaurant_id) use ($app) {
+        $cuisine = Cuisine::find($id);
+        $restaurant = Restaurant::find($restaurant_id);
+        $restaurant->delete();
+        return $app['twig']->render('current_cuisine.html.twig', array('cuisine' => $cuisine, 'restaurants' => Restaurant::getAll()));
     });
 
     return $app;

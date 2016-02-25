@@ -9,23 +9,43 @@
         $this->description = $description;
         $this->id = $id;
       }
+
       function getId()
       {
         return $this->id;
       }
+
       function setDescription($new_description)
       {
         $this->description = (string) $new_description;
       }
+
       function getDescription()
       {
         return $this->description;
       }
+
       function save()
       {
         $GLOBALS['DB']->exec("INSERT INTO cuisine (description) VALUES ('{$this->getDescription()}');");
         $this->id = $GLOBALS['DB']->lastInsertId();
       }
+
+      function getRestaurant()
+      {
+          $restaurants = array();
+          $returned_restaurants = $GLOBALS['DB']->query("SELECT * FROM restaurant WHERE cuisine_id = {$this->getId()}");
+          var_dump($returned_restaurants);
+          foreach($returned_restaurants as $restaurant) {
+              $name = $restaurant['name'];
+              $id = $restaurant['id'];
+              $cuisine_id = $restaurant['cuisine_id'];
+              $new_restaurant = new Restaurant($name, $id, $cuisine_id);
+              array_push($restaurants, $new_restaurant);
+          }
+          return $restaurants;
+      }
+
       static function getAll()
       {
         $returned_cuisines = $GLOBALS['DB']->query("SELECT * FROM cuisine;");
@@ -40,6 +60,7 @@
         }
         return $cuisines;
       }
+
       static function deleteAll()
       {
         $GLOBALS['DB']->exec("DELETE FROM cuisine;");
